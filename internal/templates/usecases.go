@@ -5,7 +5,8 @@ import (
 	_ "embed"
 	"log"
 
-	"github.com/lucas-simao/go-gen/internal/utils"
+	"github.com/lucas-simao/go-gen-ca/internal/utils"
+	goLog "github.com/lucas-simao/golog"
 )
 
 //go:embed usecases.tmpl
@@ -14,7 +15,7 @@ var usecasesFile string
 func GenerateUsecases(serviceName, projectName string) string {
 	tmpl, err := utils.InitTemplate("usecases", usecasesFile)
 	if err != nil {
-		log.Panic(err)
+		goLog.Error(err)
 	}
 
 	b := bytes.Buffer{}

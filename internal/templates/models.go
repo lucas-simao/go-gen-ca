@@ -4,52 +4,49 @@ import (
 	"bytes"
 	_ "embed"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"log"
 	"os/exec"
 
-	"github.com/lucas-simao/go-gen/internal/utils"
+	"github.com/lucas-simao/go-gen-ca/internal/utils"
+	goLog "github.com/lucas-simao/golog"
 )
 
 //go:embed models.tmpl
 var modelsFile string
 
 func GenerateModel(serviceName, jsonParse string) string {
-	structGenerated, err := generateStructFromJson(serviceName, jsonParse)
-	if err != nil {
-		log.Panic(err)
-	}
-
 	tmpl, err := utils.InitTemplate("models", modelsFile)
 	if err != nil {
-		log.Panic(err)
+		goLog.Error(err)
 	}
 
 	buf := new(bytes.Buffer)
 	err = tmpl.Execute(buf, map[string]string{
-		"Model":       structGenerated,
+		"Model":       generateStructFromJson(serviceName, jsonParse),
 		"ServiceName": serviceName,
 	})
 	if err != nil {
-		log.Panic(err)
+		goLog.Error(err)
 	}
 
 	return buf.String()
 }
 
-func generateStructFromJson(nameParse, jsonParse string) (string, error) {
+func generateStructFromJson(nameParse, jsonParse string) string {
 	if len(nameParse) == 0 {
-		return "", errors.New("should pass name")
+		goLog.Error("should pass name")
+		return ""
 	}
 
 	b, err := json.MarshalIndent(jsonParse, "", "")
 	if err != nil {
-		return "", err
+		goLog.Error(err)
+		return ""
 	}
 
 	if !json.Valid(b) {
-		return "", errors.New("invalid json")
+		goLog.Error("invalid json")
+		return ""
 	}
 
 	j := fmt.Sprintf("--json=%s", jsonParse)
@@ -58,8 +55,9 @@ func generateStructFromJson(nameParse, jsonParse string) (string, error) {
 	cmd := exec.Command("node", "json-to-go.js", n, j)
 	output, err := cmd.Output()
 	if err != nil {
-		return "", err
+		goLog.Error(err)
+		return ""
 	}
 
-	return string(output), nil
+	return string(output)
 }

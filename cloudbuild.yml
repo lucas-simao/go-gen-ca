@@ -1,0 +1,19 @@
+# Add enviroment variable to commands
+options:
+  env:
+  - GOPROXY=https://proxy.golang.org # Go Proxy for better perfomance on douwnload packages
+
+substitutions:
+  _IMAGE_NAME: gcr.io/${PROJECT_ID}/${REPO_NAME}
+
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    docker build -f deployments/Dockerfile -t $_IMAGE_NAME:$SHORT_SHA .
+    docker push $_IMAGE_NAME:$SHORT_SHA
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['run', 'deploy', 'go-gen-ca', '--image', '${_IMAGE_NAME}:${SHORT_SHA}', '--region', 'us-east1', '--platform', 'managed', '--allow-unauthenticated', '--port=3000']

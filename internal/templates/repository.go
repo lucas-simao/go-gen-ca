@@ -8,7 +8,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/lucas-simao/go-gen/internal/utils"
+	"github.com/lucas-simao/go-gen-ca/internal/utils"
+	goLog "github.com/lucas-simao/golog"
 )
 
 var re = regexp.MustCompile(`"([^"]+)"`)
@@ -19,7 +20,7 @@ var repositoryFile string
 func GenerateRepository(model, serviceName, projectName string) string {
 	tmpl, err := utils.InitTemplate("repository", repositoryFile)
 	if err != nil {
-		log.Panic(err)
+		goLog.Error(err)
 	}
 
 	b := bytes.Buffer{}

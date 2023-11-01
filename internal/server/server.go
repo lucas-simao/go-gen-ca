@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 
-	"github.com/lucas-simao/go-gen/internal/templates"
-	"github.com/lucas-simao/go-gen/internal/utils"
+	goLog "github.com/lucas-simao/golog"
+
+	"github.com/lucas-simao/go-gen-ca/internal/templates"
+	"github.com/lucas-simao/go-gen-ca/internal/utils"
 )
 
 type Response struct {
@@ -22,21 +23,52 @@ type Response struct {
 //go:embed html/index.html
 var indexHTML string
 
+//go:embed css/index.css
+var indexCSS string
+
+//go:embed css/prism.css
+var prismCSS string
+
+//go:embed js/prism.js
+var prismJS string
+
 func NewServer() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.Handle("/", getIndex())
-	mux.Handle("/css/", http.StripPrefix("/css", http.FileServer(http.Dir("internal/server/css"))))
-	mux.Handle("/js/", http.StripPrefix("/js", http.FileServer(http.Dir("internal/server/js"))))
+	mux.Handle("/css/index.css", getIndexCSS())
+	mux.Handle("/css/prism.css", getPrismCSS())
+	mux.Handle("/js/prism.js", getPrismJS())
 
 	return mux
+}
+
+func getIndexCSS() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/css")
+		fmt.Fprint(w, indexCSS)
+	}
+}
+
+func getPrismCSS() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/css")
+		fmt.Fprint(w, prismCSS)
+	}
+}
+
+func getPrismJS() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/text")
+		fmt.Fprint(w, prismJS)
+	}
 }
 
 func getIndex() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		t, err := template.New("index").Parse(indexHTML)
 		if err != nil {
-			log.Panic(err)
+			goLog.Error(err)
 		}
 
 		projectName := r.URL.Query().Get("projectName")
@@ -45,6 +77,12 @@ func getIndex() http.HandlerFunc {
 
 		t.Execute(w, func() map[string]string {
 			if len(projectName) > 0 && len(serviceName) > 0 && len(jsonParsed) > 0 && json.Valid([]byte(jsonParsed)) {
+				goLog.Info("new request", map[string]interface{}{
+					"projectName": projectName,
+					"serviceName": serviceName,
+					"jsonParsed":  jsonParsed,
+				})
+
 				model := templates.GenerateModel(serviceName, jsonParsed)
 
 				return map[string]string{
