@@ -2,6 +2,7 @@ package server
 
 import (
 	_ "embed"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
@@ -43,7 +44,7 @@ func getIndex() http.HandlerFunc {
 		jsonParsed := r.URL.Query().Get("json")
 
 		t.Execute(w, func() map[string]string {
-			if len(projectName) > 0 && len(serviceName) > 0 && len(jsonParsed) > 0 {
+			if len(projectName) > 0 && len(serviceName) > 0 && len(jsonParsed) > 0 && json.Valid([]byte(jsonParsed)) {
 				model := templates.GenerateModel(serviceName, jsonParsed)
 
 				return map[string]string{

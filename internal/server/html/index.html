@@ -18,19 +18,20 @@
     <div class="form__grid">
       <div class="field">
         <label for="projectName">Project Name</label>
-        <input id="projectName" type="text">
+        <input id="projectName" type="text" placeholder="ip-ledger">
       </div>
       <div class="field">
         <label for="serviceName">Service Name</label>
-        <input id="serviceName" type="text">
+        <input id="serviceName" type="text" placeholder="account">
       </div>
+      <button onclick="generateMyCode()">Generate my code</button>
     </div>
     <div class="field">
       <label for="json">Json</label>
-      <textarea id="json" name="json" rows="10" cols="50"></textarea>
+      <textarea id="json" name="json" rows="11" cols="50"
+        placeholder='{&#10; "digit": 0,&#10; "agency": "0001",&#10; "number": "123456",&#10; "status": true&#10;}'></textarea>
     </div>
   </div>
-  <button onclick="generateMyCode()">Generate my code</button>
 
   <div class="code line-numbers" data-prismjs-copy-timeout="500">
     {{if .Model}}
@@ -66,7 +67,7 @@
       const serviceName = document.getElementById("serviceName").value;
       const json = document.getElementById("json").value.replace(/[\n\t\s]/g, '');
 
-      var url = "http://localhost:8080/?projectName=" + projectName + "&serviceName=" + serviceName + "&json=" + json
+      var url = window.location.origin + "?projectName=" + projectName + "&serviceName=" + serviceName + "&json=" + json
       window.open(url, "_self")
     }
   </script>
