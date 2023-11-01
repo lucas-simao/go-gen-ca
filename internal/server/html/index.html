@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/index.css">
+  <title>My magic code</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-go.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <h1>My magic code</h1>
+  <div class="form">
+    <div class="form__grid">
+      <div class="field">
+        <label for="projectName">Project Name</label>
+        <input id="projectName" type="text">
+      </div>
+      <div class="field">
+        <label for="serviceName">Service Name</label>
+        <input id="serviceName" type="text">
+      </div>
+    </div>
+    <div class="field">
+      <label for="json">Json</label>
+      <textarea id="json" name="json" rows="10" cols="50"></textarea>
+    </div>
+  </div>
+  <button onclick="generateMyCode()">Generate my code</button>
+
+  <div>
+    {{if .Model}}
+    <span>{{ .ModelPath }}</span>
+    <pre><code class="language-go">{{ .Model }}</code></pre>
+    {{end}}
+  </div>
+
+  <div>
+    {{if .Controller}}
+    <span>{{ .ControllerPath }}</span>
+    <pre><code class="language-go">{{ .Controller }}</code></pre>
+    {{end}}
+  </div>
+
+  <div>
+    {{if .UseCase}}
+    <span>{{ .UseCasePath }}</span>
+    <pre><code class="language-go">{{ .UseCase }}</code></pre>
+    {{end}}
+  </div>
+
+  <div>
+    {{if .Repository}}
+    <span>{{ .RepositoryPath }}</span>
+    <pre><code class="language-go">{{ .Repository }}</code></pre>
+    {{end}}
+  </div>
+
+  <script>
+    async function generateMyCode () {
+      const projectName = document.getElementById("projectName").value;
+      const serviceName = document.getElementById("serviceName").value;
+      const json = document.getElementById("json").value.replace(/[\n\t\s]/g, '');
+
+      var url = "http://localhost:8080/?projectName=" + projectName + "&serviceName=" + serviceName + "&json=" + json
+      window.open(url, "_self")
+    }
+  </script>
+</body>
+
+</html>

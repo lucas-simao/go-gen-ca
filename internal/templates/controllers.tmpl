@@ -22,25 +22,25 @@ func New{{ .ServiceName | ToTitle }}Controller() *{{ .ServiceName | ToTitle }}Co
 func (c *{{ .ServiceName | ToTitle }}Controller) Routes() []webrest.Route {
 	return []webrest.Route{
 		{
-			URI:      "{{ .ServiceName | ToTitle }}s",
+			URI:      "{{ .ServiceName | ToLower }}s",
 			Method:   http.MethodPost,
 			Function: c.Create{{ .ServiceName | ToTitle }},
 			Prefix:   webrest.AuthenticatedApi,
 		},
 		{
-			URI:      "{{ .ServiceName | ToTitle }}s/{id}",
+			URI:      "{{ .ServiceName | ToLower }}s/{id}",
 			Method:   http.MethodGet,
 			Function: c.Get{{ .ServiceName | ToTitle }}ById,
 			Prefix:   webrest.AuthenticatedApi,
 		},
 		{
-			URI:      "{{ .ServiceName | ToTitle }}s/{id}",
+			URI:      "{{ .ServiceName | ToLower }}s/{id}",
 			Method:   http.MethodPatch,
 			Function: c.Update{{ .ServiceName | ToTitle }},
 			Prefix:   webrest.AuthenticatedApi,
 		},
 		{
-			URI:      "{{ .ServiceName | ToTitle }}s/{id}",
+			URI:      "{{ .ServiceName | ToLower }}s/{id}",
 			Method:   http.MethodDelete,
 			Function: c.Delete{{ .ServiceName | ToTitle }}ById,
 			Prefix:   webrest.AuthenticatedApi,
@@ -48,7 +48,7 @@ func (c *{{ .ServiceName | ToTitle }}Controller) Routes() []webrest.Route {
 	}
 }
 
-// @Summary Create {{ .ServiceName | ToTitle }}
+// @Summary Create {{ .ServiceName | ToLower }}
 // @Tags
 // @Accept json
 // @Produce json
@@ -58,7 +58,7 @@ func (c *{{ .ServiceName | ToTitle }}Controller) Routes() []webrest.Route {
 // @Param request body models.{{ .ServiceName | ToTitle }} true "request body"
 // @Param X-{{ .ServiceName | ToTitle }}antId header uint64 true "id da contabilidade" minimum(0)
 // @Param X-UserId header uint64 true "id do usuário" minimum(0)
-// @Router /api/{{ .ServiceName | ToTitle }}s [POST]
+// @Router /api/{{ .ServiceName | ToLower }}s [POST]
 func (c *{{ .ServiceName | ToTitle }}Controller) Create{{ .ServiceName | ToTitle }}(ctx webrest.WebContext) {
 	payload := &models.{{ .ServiceName | ToTitle }}{}
 
@@ -77,17 +77,17 @@ func (c *{{ .ServiceName | ToTitle }}Controller) Create{{ .ServiceName | ToTitle
 	ctx.JsonResponse(http.StatusCreated, resp)
 }
 
-// @Summary Get {{ .ServiceName | ToTitle }} by id
+// @Summary Get {{ .ServiceName | ToLower }} by id
 // @Tags
 // @Accept json
 // @Produce json
 // @Success 200 {object} models.{{ .ServiceName | ToTitle }}
 // @Failure 400
 // @Failure 500
-// @Param id path string true "{{ .ServiceName | ToTitle }} ID"
+// @Param id path string true "{{ .ServiceName | ToLower }} ID"
 // @Param X-{{ .ServiceName | ToTitle }}antId header uint64 true "id da contabilidade" minimum(0)
 // @Param X-UserId header uint64 true "id do usuário" minimum(0)
-// @Router /api/{{ .ServiceName | ToTitle }}s/{id} [GET]
+// @Router /api/{{ .ServiceName | ToLower }}s/{id} [GET]
 func (c *{{ .ServiceName | ToTitle }}Controller) Get{{ .ServiceName | ToTitle }}ById(ctx webrest.WebContext) {
 	id, err := uuid.Parse(ctx.PathParam("id"))
 	if err != nil {
@@ -104,18 +104,18 @@ func (c *{{ .ServiceName | ToTitle }}Controller) Get{{ .ServiceName | ToTitle }}
 	ctx.JsonResponse(http.StatusOK, resp)
 }
 
-// @Summary Update {{ .ServiceName | ToTitle }}
+// @Summary Update {{ .ServiceName | ToLower }}
 // @Tags
 // @Accept json
 // @Produce json
 // @Success 204
 // @Failure 400
 // @Failure 500
-// @Param id path string true "{{ .ServiceName | ToTitle }} ID"
+// @Param id path string true "{{ .ServiceName | ToLower }} ID"
 // @Param request body models.{{ .ServiceName | ToTitle }} true "request body"
 // @Param X-{{ .ServiceName | ToTitle }}antId header uint64 true "id da contabilidade" minimum(0)
 // @Param X-UserId header uint64 true "id do usuário" minimum(0)
-// @Router /api/{{ .ServiceName | ToTitle }}s [PATCH]
+// @Router /api/{{ .ServiceName | ToLower }}s [PATCH]
 func (c *{{ .ServiceName | ToTitle }}Controller) Update{{ .ServiceName | ToTitle }}(ctx webrest.WebContext) {
 	id, err := uuid.Parse(ctx.PathParam("id"))
 	if err != nil {
@@ -140,17 +140,17 @@ func (c *{{ .ServiceName | ToTitle }}Controller) Update{{ .ServiceName | ToTitle
 	ctx.EmptyResponse(http.StatusNoContent)
 }
 
-// @Summary Delete {{ .ServiceName | ToTitle }}
+// @Summary Delete {{ .ServiceName | ToLower }}
 // @Tags
 // @Accept json
 // @Produce json
 // @Success 204
 // @Failure 400
 // @Failure 500
-// @Param id path string true "{{ .ServiceName | ToTitle }} ID"
+// @Param id path string true "{{ .ServiceName | ToLower }} ID"
 // @Param X-{{ .ServiceName | ToTitle }}antId header uint64 true "id da contabilidade" minimum(0)
 // @Param X-UserId header uint64 true "id do usuário" minimum(0)
-// @Router /api/{{ .ServiceName | ToTitle }}s/{id} [DELETE]
+// @Router /api/{{ .ServiceName | ToLower }}s/{id} [DELETE]
 func (c *{{ .ServiceName | ToTitle }}Controller) Delete{{ .ServiceName | ToTitle }}ById(ctx webrest.WebContext) {
 	id, err := uuid.Parse(ctx.PathParam("id"))
 	if err != nil {

@@ -23,29 +23,25 @@ func New{{ .ServiceName | ToTitle }}DBRepository() *{{ .ServiceName | ToTitle }}
 }
 
 func (r *{{ .ServiceName | ToTitle }}DBRepository) Create{{ .ServiceName | ToTitle }}(ctx context.Context, {{ .ServiceName | ToLower }} *models.{{ .ServiceName | ToTitle }}) (*models.{{ .ServiceName | ToTitle }}Response, error) {
-	query := `
-		INSERT INTO {{ .ServiceName | ToLower }}(tenant_id, digit, agency, status)
-		VALUES($1, $2, $3, $4)
-		RETURNING id
-	`
+	query := `{{ .InsertQuery }}`
 
-	return sqlDB.NewQuery[models.{{ .ServiceName | ToTitle }}Response](ctx, query, {{ .ServiceName | ToLower }}.TenantID, {{ .ServiceName | ToLower }}.Digit, {{ .ServiceName | ToLower }}.Agency, {{ .ServiceName | ToLower }}.Status).One()
+	return sqlDB.NewQuery[models.{{ .ServiceName | ToTitle }}Response](ctx, query, {{ .InsertQueryArgs }}).One()
 }
 
 func (r *{{ .ServiceName | ToTitle }}DBRepository) Get{{ .ServiceName | ToTitle }}ById(ctx context.Context, id uuid.UUID) (*models.{{ .ServiceName | ToTitle }}, error) {
-	query := `SELECT id, tenant_id, digit, agency, number, status, created_at, updated_at FROM {{ .ServiceName | ToLower }} WHERE id = $1`
+	query := `{{ .GetQuery }}`
 
 	return sqlDB.NewQuery[models.{{ .ServiceName | ToTitle }}](ctx, query, id).One()
 }
 
 func (r *{{ .ServiceName | ToTitle }}DBRepository) Update{{ .ServiceName | ToTitle }}(ctx context.Context, id uuid.UUID, {{ .ServiceName | ToLower }} *models.{{ .ServiceName | ToTitle }}) error {
-	query := `UPDATE {{ .ServiceName | ToLower }} SET tenant_id = $1 WHERE id = $2`
+	query := `{{ .UpdateQuery }}`
 
-	return sqlDB.NewStatement(ctx, query, {{ .ServiceName | ToLower }}.TenantID, id).Execute()
+	return sqlDB.NewStatement(ctx, query, {{ .InsertQueryArgs }}, id).Execute()
 }
 
 func (r *{{ .ServiceName | ToTitle }}DBRepository) Delete{{ .ServiceName | ToTitle }}ById(ctx context.Context, id uuid.UUID) error {
-	const query = `DELETE FROM {{ .ServiceName | ToLower }} WHERE id = $1`
+	const query = `{{ .DeleteQuery }}`
 
 	return sqlDB.NewStatement(ctx, query, id).Execute()
 }
