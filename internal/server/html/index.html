@@ -5,12 +5,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/index.css">
   <title>My magic code</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>
-  <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-go.min.js"></script>
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/prism.css" />
+  <script src="/js/prism.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
@@ -34,31 +32,31 @@
   </div>
   <button onclick="generateMyCode()">Generate my code</button>
 
-  <div>
+  <div class="code line-numbers" data-prismjs-copy-timeout="500">
     {{if .Model}}
     <span>{{ .ModelPath }}</span>
-    <pre><code class="language-go">{{ .Model }}</code></pre>
+    <pre><code class="language-go" data-prismjs-copy="Copy model!">{{ .Model }}</code></pre>
     {{end}}
   </div>
 
-  <div>
+  <div class="code line-numbers" data-prismjs-copy-timeout=" 500">
     {{if .Controller}}
     <span>{{ .ControllerPath }}</span>
-    <pre><code class="language-go">{{ .Controller }}</code></pre>
+    <pre><code class="language-go" data-prismjs-copy="Copy controller!">{{ .Controller }}</code></pre>
     {{end}}
   </div>
 
-  <div>
+  <div class="code line-numbers" data-prismjs-copy-timeout=" 500">
     {{if .UseCase}}
     <span>{{ .UseCasePath }}</span>
-    <pre><code class="language-go">{{ .UseCase }}</code></pre>
+    <pre><code class="language-go" data-prismjs-copy="Copy usecase!">{{ .UseCase }}</code></pre>
     {{end}}
   </div>
 
-  <div>
+  <div class="code line-numbers" data-prismjs-copy-timeout=" 500">
     {{if .Repository}}
     <span>{{ .RepositoryPath }}</span>
-    <pre><code class="language-go">{{ .Repository }}</code></pre>
+    <pre><code class="language-go" data-prismjs-copy="Copy repository!">{{ .Repository }}</code></pre>
     {{end}}
   </div>
 

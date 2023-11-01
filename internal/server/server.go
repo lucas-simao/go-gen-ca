@@ -26,6 +26,7 @@ func NewServer() *http.ServeMux {
 
 	mux.Handle("/", getIndex())
 	mux.Handle("/css/", http.StripPrefix("/css", http.FileServer(http.Dir("internal/server/css"))))
+	mux.Handle("/js/", http.StripPrefix("/js", http.FileServer(http.Dir("internal/server/js"))))
 
 	return mux
 }
