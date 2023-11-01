@@ -1,0 +1,43 @@
+//go:generate mockgen -source {{ .ServiceName | ToLower }}_usecases.go -destination mock/{{ .ServiceName | ToLower }}_usecases_mock.go -package mock
+package usecases
+
+import (
+	"context"
+
+	"github.com/ContaAzul/{{ .ProjectName | ToLower }}/src/domain/models"
+	"github.com/ContaAzul/{{ .ProjectName | ToLower }}/src/infra/repositories"
+	"github.com/google/uuid"
+)
+
+type I{{ .ServiceName | ToTitle }}Usecases interface {
+	Create{{ .ServiceName | ToTitle }}(ctx context.Context, p *models.{{ .ServiceName | ToTitle }}) (*models.{{ .ServiceName | ToTitle }}Response, error)
+	Get{{ .ServiceName | ToTitle }}ById(ctx context.Context, id uuid.UUID) (*models.{{ .ServiceName | ToTitle }}, error)
+	Update{{ .ServiceName | ToTitle }}(ctx context.Context, id uuid.UUID, {{ .ServiceName | ToLower }} *models.{{ .ServiceName | ToTitle }}) error
+	Delete{{ .ServiceName | ToTitle }}ById(ctx context.Context, id uuid.UUID) error
+}
+
+type {{ .ServiceName | ToTitle }}Usecases struct {
+	{{ .ServiceName | ToTitle }}Repository repositories.I{{ .ServiceName | ToTitle }}Repository
+}
+
+func New{{ .ServiceName | ToTitle }}Usecases() *{{ .ServiceName | ToTitle }}Usecases {
+	return &{{ .ServiceName | ToTitle }}Usecases{
+		{{ .ServiceName | ToTitle }}Repository: repositories.New{{ .ServiceName | ToTitle }}DBRepository(),
+	}
+}
+
+func (u *{{ .ServiceName | ToTitle }}Usecases) Create{{ .ServiceName | ToTitle }}(ctx context.Context, p *models.{{ .ServiceName | ToTitle }}) (*models.{{ .ServiceName | ToTitle }}Response, error) {
+	return u.{{ .ServiceName | ToTitle }}Repository.Create{{ .ServiceName | ToTitle }}(ctx, p)
+}
+
+func (u *{{ .ServiceName | ToTitle }}Usecases) Get{{ .ServiceName | ToTitle }}ById(ctx context.Context, id uuid.UUID) (*models.{{ .ServiceName | ToTitle }}, error) {
+	return u.{{ .ServiceName | ToTitle }}Repository.Get{{ .ServiceName | ToTitle }}ById(ctx, id)
+}
+
+func (u *{{ .ServiceName | ToTitle }}Usecases) Update{{ .ServiceName | ToTitle }}(ctx context.Context, id uuid.UUID, {{ .ServiceName | ToLower }} *models.{{ .ServiceName | ToTitle }}) error {
+	return u.{{ .ServiceName | ToTitle }}Repository.Update{{ .ServiceName | ToTitle }}(ctx, id, {{ .ServiceName | ToLower }})
+}
+
+func (u *{{ .ServiceName | ToTitle }}Usecases) Delete{{ .ServiceName | ToTitle }}ById(ctx context.Context, id uuid.UUID) error {
+	return u.{{ .ServiceName | ToTitle }}Repository.Delete{{ .ServiceName | ToTitle }}ById(ctx, id)
+}

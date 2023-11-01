@@ -1,0 +1,7 @@
+package models
+
+{{ .Model }}
+
+type {{ .ServiceName | ToTitle }}Response struct {
+	ID uuid.UUID `json:"id"`
+}
