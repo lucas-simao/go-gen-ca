@@ -82,7 +82,7 @@ func GenerateInsertQuery(model, serviceName string) string {
 
 	fields = strings.ReplaceAll(fields, "\"", "")
 
-	insert := fmt.Sprintf("INSERT INTO %s(%s)", strings.ToUpper(serviceName), fields)
+	insert := fmt.Sprintf("INSERT INTO %s(%s)", strings.ToLower(serviceName), fields)
 
 	var insertArgs string
 
@@ -126,7 +126,7 @@ func GenerateUpdateQuery(model, serviceName string) string {
 		}
 	}
 
-	update := fmt.Sprintf("UPDATE %s", strings.ToUpper(serviceName))
+	update := fmt.Sprintf("UPDATE %s", strings.ToLower(serviceName))
 
 	var updateArgs string
 
