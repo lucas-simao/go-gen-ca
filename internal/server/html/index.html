@@ -17,19 +17,18 @@
   <div class="form">
     <div class="form__grid">
       <div class="field">
-        <label for="projectName">Project Name</label>
-        <input id="projectName" type="text" placeholder="ip-ledger">
+        <label for="projectName">Nome do projeto</label>
+        <input id="projectName" type="text">
       </div>
       <div class="field">
-        <label for="serviceName">Service Name</label>
-        <input id="serviceName" type="text" placeholder="account">
+        <label for="serviceName">Nome do serviço a ser criado</label>
+        <input id="serviceName" type="text">
       </div>
       <button onclick="generateMyCode()">Generate my code</button>
     </div>
     <div class="field">
-      <label for="json">Json</label>
-      <textarea id="json" name="json" rows="11" cols="50"
-        placeholder='{&#10; "digit": 0,&#10; "agency": "0001",&#10; "number": "123456",&#10; "status": true&#10;}'></textarea>
+      <label for="json">Json que contem os campos para criar o CRUD</label>
+      <textarea id="json" name="json" rows="11" cols="50"></textarea>
     </div>
   </div>
 
